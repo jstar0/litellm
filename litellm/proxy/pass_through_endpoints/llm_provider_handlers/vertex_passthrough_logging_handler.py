@@ -657,7 +657,12 @@ class VertexPassthroughLoggingHandler:
                 continue
             all_openai_chunks.append(parsed_chunk)
 
-        complete_streaming_response: Final = litellm.stream_chunk_builder(chunks=all_openai_chunks)
+        complete_streaming_response: Final = litellm.stream_chunk_builder(
+            chunks=all_openai_chunks,
+            logging_obj=(
+                litellm_logging_obj if "generateContent" in url_route or "streamGenerateContent" in url_route else None
+            ),
+        )
 
         return complete_streaming_response
 
